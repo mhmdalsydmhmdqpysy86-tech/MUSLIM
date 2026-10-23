@@ -1,0 +1,265 @@
+{
+  "entities": {
+    "RoomTask": {
+      "title": "RoomTask",
+      "description": "Represents a hotel room housekeeping task, IoT status, and latest AI quality score scoped to an authenticated supervisor/staff user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user UID owning this hotel workspace."
+        },
+        "roomNumber": {
+          "type": "string",
+          "description": "Room identifier, e.g. 304, 210, 105."
+        },
+        "roomTitle": {
+          "type": "string",
+          "description": "Arabic display title of the room."
+        },
+        "floorNumber": {
+          "type": "integer",
+          "description": "Floor number of the room."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"],
+          "description": "Task priority level."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "NEEDS_FIX", "COMPLETED"],
+          "description": "Current operational status of the room."
+        },
+        "subtitleNote": {
+          "type": "string",
+          "description": "Short operational subtitle or guest check-out context."
+        },
+        "targetMinutes": {
+          "type": "integer",
+          "description": "Target turnaround time in minutes."
+        },
+        "iotStatusLabel": {
+          "type": "string",
+          "description": "Live IoT sensor status summary."
+        },
+        "iotSeverity": {
+          "type": "string",
+          "enum": ["CRITICAL", "WARNING", "STABLE"],
+          "description": "Severity of the IoT sensor status."
+        },
+        "qualityScore": {
+          "type": "integer",
+          "description": "Latest AI inspection quality score (0 to 100)."
+        },
+        "assignedStaff": {
+          "type": "string",
+          "description": "Name of assigned housekeeping attendant."
+        },
+        "alertActive": {
+          "type": "boolean",
+          "description": "Whether an urgent supervisor AI fix alert is active for the housekeeper."
+        },
+        "alertMessage": {
+          "type": "string",
+          "description": "Actionable instructions sent to the housekeeper."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "roomNumber",
+        "roomTitle",
+        "floorNumber",
+        "priority",
+        "status",
+        "subtitleNote",
+        "targetMinutes",
+        "iotStatusLabel",
+        "iotSeverity",
+        "qualityScore",
+        "assignedStaff",
+        "alertActive",
+        "alertMessage",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "InspectionLog": {
+      "title": "InspectionLog",
+      "description": "Represents an AI visual & IoT inspection audit record for a hotel room.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user UID who performed the inspection."
+        },
+        "roomNumber": {
+          "type": "string",
+          "description": "Room number inspected."
+        },
+        "roomTitle": {
+          "type": "string",
+          "description": "Room title inspected."
+        },
+        "qualityScore": {
+          "type": "integer",
+          "description": "Calculated quality score between 0 and 100."
+        },
+        "issuesCount": {
+          "type": "integer",
+          "description": "Number of issues requiring attention."
+        },
+        "durationSeconds": {
+          "type": "integer",
+          "description": "Inspection duration in seconds."
+        },
+        "beddingIssues": {
+          "type": "integer",
+          "description": "Count of bedding/furnishing issues detected."
+        },
+        "towelIssues": {
+          "type": "integer",
+          "description": "Count of towel/amenity shortages detected."
+        },
+        "surfaceIssues": {
+          "type": "integer",
+          "description": "Count of surface cleanliness issues detected."
+        },
+        "maintenanceIssues": {
+          "type": "integer",
+          "description": "Count of maintenance issues detected."
+        },
+        "summaryText": {
+          "type": "string",
+          "description": "Concise Arabic summary of AI inspection findings."
+        },
+        "notifiedHousekeeper": {
+          "type": "boolean",
+          "description": "Whether the housekeeper was notified from this inspection."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the inspection occurred (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "roomNumber",
+        "roomTitle",
+        "qualityScore",
+        "issuesCount",
+        "durationSeconds",
+        "beddingIssues",
+        "towelIssues",
+        "surfaceIssues",
+        "maintenanceIssues",
+        "summaryText",
+        "notifiedHousekeeper",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ConsumableItem": {
+      "title": "ConsumableItem",
+      "description": "Represents a hotel housekeeping consumable stock item (soap, shampoo, towels, amenities) with real-time threshold tracking and management low-stock alerts.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated user UID owning this hotel inventory."
+        },
+        "itemName": {
+          "type": "string",
+          "description": "Arabic display name of the consumable item."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["SOAP", "SHAMPOO", "TOWELS", "AMENITIES"],
+          "description": "Category of the consumable item."
+        },
+        "currentStock": {
+          "type": "integer",
+          "description": "Current available stock count."
+        },
+        "minThreshold": {
+          "type": "integer",
+          "description": "Minimum stock threshold; when currentStock <= minThreshold, low-stock alert triggers."
+        },
+        "maxCapacity": {
+          "type": "integer",
+          "description": "Full storage capacity for progress calculation and restocking."
+        },
+        "unitLabel": {
+          "type": "string",
+          "description": "Unit of measure in Arabic (عبوة, قطعة, طقم)."
+        },
+        "storageLocation": {
+          "type": "string",
+          "description": "Storage location or floor pantry name."
+        },
+        "managementAlertSent": {
+          "type": "boolean",
+          "description": "Whether a supply order / management low-stock alert has been dispatched."
+        },
+        "alertNote": {
+          "type": "string",
+          "description": "Management alert message or supply request status note."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when created (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "itemName",
+        "category",
+        "currentStock",
+        "minThreshold",
+        "maxCapacity",
+        "unitLabel",
+        "storageLocation",
+        "managementAlertSent",
+        "alertNote",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/room_tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/RoomTask" },
+      "description": "Stores hotel room tasks, IoT statuses, and housekeeper alerts scoped per authenticated user."
+    },
+    "/users/{userId}/inspections/{inspectionId}": {
+      "schema": { "$ref": "#/entities/InspectionLog" },
+      "description": "Stores AI visual and IoT inspection audit logs for analytics and history scoped per authenticated user."
+    },
+    "/users/{userId}/consumables/{itemId}": {
+      "schema": { "$ref": "#/entities/ConsumableItem" },
+      "description": "Stores housekeeping consumable inventory items (soap, shampoo, towels, amenities) and management low-stock alerts scoped per authenticated user."
+    }
+  }
+}

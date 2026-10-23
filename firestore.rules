@@ -1,0 +1,191 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Default-Deny Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Reusable Hardened Primitives ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Validation Blueprints ---
+
+    function isValidRoomTask(data, userId) {
+      return data.userId is string && data.userId == userId && data.userId == request.auth.uid &&
+             data.roomNumber is string && data.roomNumber.size() >= 1 && data.roomNumber.size() <= 20 &&
+             data.roomTitle is string && data.roomTitle.size() >= 1 && data.roomTitle.size() <= 120 &&
+             data.floorNumber is int && data.floorNumber >= 0 && data.floorNumber <= 200 &&
+             data.priority is string && (data.priority in ['HIGH', 'MEDIUM', 'LOW']) &&
+             data.status is string && (data.status in ['PENDING', 'NEEDS_FIX', 'COMPLETED']) &&
+             data.subtitleNote is string && data.subtitleNote.size() <= 250 &&
+             data.targetMinutes is int && data.targetMinutes >= 1 && data.targetMinutes <= 240 &&
+             data.iotStatusLabel is string && data.iotStatusLabel.size() <= 150 &&
+             data.iotSeverity is string && (data.iotSeverity in ['CRITICAL', 'WARNING', 'STABLE']) &&
+             data.qualityScore is int && data.qualityScore >= 0 && data.qualityScore <= 100 &&
+             data.assignedStaff is string && data.assignedStaff.size() >= 1 && data.assignedStaff.size() <= 80 &&
+             data.alertActive is bool &&
+             data.alertMessage is string && data.alertMessage.size() <= 500 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidInspectionLog(data, userId) {
+      return data.userId is string && data.userId == userId && data.userId == request.auth.uid &&
+             data.roomNumber is string && data.roomNumber.size() >= 1 && data.roomNumber.size() <= 20 &&
+             data.roomTitle is string && data.roomTitle.size() >= 1 && data.roomTitle.size() <= 120 &&
+             data.qualityScore is int && data.qualityScore >= 0 && data.qualityScore <= 100 &&
+             data.issuesCount is int && data.issuesCount >= 0 && data.issuesCount <= 50 &&
+             data.durationSeconds is int && data.durationSeconds >= 1 && data.durationSeconds <= 7200 &&
+             data.beddingIssues is int && data.beddingIssues >= 0 && data.beddingIssues <= 50 &&
+             data.towelIssues is int && data.towelIssues >= 0 && data.towelIssues <= 50 &&
+             data.surfaceIssues is int && data.surfaceIssues >= 0 && data.surfaceIssues <= 50 &&
+             data.maintenanceIssues is int && data.maintenanceIssues >= 0 && data.maintenanceIssues <= 50 &&
+             data.summaryText is string && data.summaryText.size() >= 1 && data.summaryText.size() <= 600 &&
+             data.notifiedHousekeeper is bool &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidConsumableItem(data, userId) {
+      return data.userId is string && data.userId == userId && data.userId == request.auth.uid &&
+             data.itemName is string && data.itemName.size() >= 1 && data.itemName.size() <= 120 &&
+             data.category is string && (data.category in ['SOAP', 'SHAMPOO', 'TOWELS', 'AMENITIES']) &&
+             data.currentStock is int && data.currentStock >= 0 && data.currentStock <= 100000 &&
+             data.minThreshold is int && data.minThreshold >= 1 && data.minThreshold <= 50000 &&
+             data.maxCapacity is int && data.maxCapacity >= 1 && data.maxCapacity <= 100000 &&
+             data.unitLabel is string && data.unitLabel.size() >= 1 && data.unitLabel.size() <= 40 &&
+             data.storageLocation is string && data.storageLocation.size() >= 1 && data.storageLocation.size() <= 120 &&
+             data.managementAlertSent is bool &&
+             data.alertNote is string && data.alertNote.size() <= 400 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    // --- Collection Rules ---
+
+    match /users/{userId}/room_tasks/{taskId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(taskId) && existing().userId == request.auth.uid;
+      allow list: if isOwner(userId) && existing().userId == request.auth.uid;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(taskId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'roomNumber', 'roomTitle', 'floorNumber', 'priority',
+                         'status', 'subtitleNote', 'targetMinutes', 'iotStatusLabel',
+                         'iotSeverity', 'qualityScore', 'assignedStaff', 'alertActive',
+                         'alertMessage', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'roomNumber', 'roomTitle', 'floorNumber', 'priority',
+                         'status', 'subtitleNote', 'targetMinutes', 'iotStatusLabel',
+                         'iotSeverity', 'qualityScore', 'assignedStaff', 'alertActive',
+                         'alertMessage', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidRoomTask(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(taskId) &&
+                       isValidRoomTask(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'roomTitle', 'floorNumber', 'priority', 'status', 'subtitleNote',
+                         'targetMinutes', 'iotStatusLabel', 'iotSeverity', 'qualityScore',
+                         'assignedStaff', 'alertActive', 'alertMessage', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(taskId) && existing().userId == request.auth.uid;
+    }
+
+    match /users/{userId}/inspections/{inspectionId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(inspectionId) && existing().userId == request.auth.uid;
+      allow list: if isOwner(userId) && existing().userId == request.auth.uid;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(inspectionId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'roomNumber', 'roomTitle', 'qualityScore', 'issuesCount',
+                         'durationSeconds', 'beddingIssues', 'towelIssues', 'surfaceIssues',
+                         'maintenanceIssues', 'summaryText', 'notifiedHousekeeper',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'roomNumber', 'roomTitle', 'qualityScore', 'issuesCount',
+                         'durationSeconds', 'beddingIssues', 'towelIssues', 'surfaceIssues',
+                         'maintenanceIssues', 'summaryText', 'notifiedHousekeeper',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidInspectionLog(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(inspectionId) &&
+                       isValidInspectionLog(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'notifiedHousekeeper', 'summaryText', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(inspectionId) && existing().userId == request.auth.uid;
+    }
+
+    match /users/{userId}/consumables/{itemId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(itemId) && existing().userId == request.auth.uid;
+      allow list: if isOwner(userId) && existing().userId == request.auth.uid;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(itemId) &&
+                       incoming().keys().hasAll([
+                         'userId', 'itemName', 'category', 'currentStock', 'minThreshold',
+                         'maxCapacity', 'unitLabel', 'storageLocation', 'managementAlertSent',
+                         'alertNote', 'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'itemName', 'category', 'currentStock', 'minThreshold',
+                         'maxCapacity', 'unitLabel', 'storageLocation', 'managementAlertSent',
+                         'alertNote', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidConsumableItem(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidId(itemId) &&
+                       isValidConsumableItem(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'itemName', 'category', 'currentStock', 'minThreshold',
+                         'maxCapacity', 'unitLabel', 'storageLocation',
+                         'managementAlertSent', 'alertNote', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(itemId) && existing().userId == request.auth.uid;
+    }
+  }
+}

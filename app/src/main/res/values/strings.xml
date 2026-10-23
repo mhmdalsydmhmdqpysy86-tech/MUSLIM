@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">OptiClean AI</string>
+    <string name="app_subtitle">منظومة الإشراف الفندقي الذكي</string>
+    <string name="status_connected">مُتصل</string>
+
+    <!-- Auth Screen -->
+    <string name="auth_welcome_title">مرحباً بك في OptiClean AI</string>
+    <string name="auth_welcome_desc">منصة الإشراف الداخلي الفندقي المدعومة بالذكاء الاصطناعي البصري وحساسات IoT اللحظية لضمان أعلى معايير الضيافة العالمية.</string>
+    <string name="auth_sign_in_google">تسجيل الدخول باستخدام Google</string>
+    <string name="auth_feature_vision">فحص بصري ذكي بالذكاء الاصطناعي</string>
+    <string name="auth_feature_iot">مزامنة سحابية وتنبيهات فورية</string>
+    <string name="auth_feature_kpi">تحليلات حية لمؤشرات الجودة</string>
+    <string name="sign_out_label">تسجيل الخروج</string>
+    <string name="cloud_sync_optional">مزامنة سحابية</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_supervisor">فحص AI</string>
+    <string name="nav_housekeeper">المهام</string>
+    <string name="nav_inventory">المخزون</string>
+    <string name="nav_dashboard">الإحصائيات</string>
+
+    <!-- Supervisor AI Inspector -->
+    <string name="inspector_hint">وجه الكاميرا أو اختر صورة للغرفة لبدء الفحص البصري الذكي</string>
+    <string name="btn_start_ai_scan">بدء المسح الذكي بالذكاء الاصطناعي</string>
+    <string name="btn_rescan_ai">إعادة المسح الذكي</string>
+    <string name="scanning_in_progress">جاري المسح بالذكاء الاصطناعي...</string>
+    <string name="audit_result_title">نتيجة التدقيق الآلي</string>
+    <string name="status_waiting_scan">بانتظار المسح</string>
+    <string name="empty_scan_prompt">اضغط على زر المسح لعرض الملاحظات وإرسالها فوراً</string>
+    <string name="btn_send_housekeeper_alert">إرسال الإشعارات لعامل النظافة للتعديل</string>
+    <string name="btn_approve_room_ready">اعتماد الغرفة جاهزة للنزيل</string>
+    <string name="mode_sample_room">معاينة ذكية</string>
+    <string name="mode_live_camera">كاميرا حية</string>
+    <string name="mode_photo_picker">رفع صورة</string>
+    <string name="capture_and_analyze">التقاط وفحص فوري</string>
+    <string name="ai_engine_badge">Gemini Vision + IoT Scan</string>
+    <string name="floor_prefix">الدور %1$d</string>
+
+    <!-- Housekeeper Tasks -->
+    <string name="tasks_header_title">مهام النظافة اليومية</string>
+    <string name="tasks_header_subtitle">مُرتبة حسب الأولوية وتحديثات IoT اللحظية</string>
+    <string name="rooms_count_badge">%1$d غرف</string>
+    <string name="urgent_supervisor_alert">تنبيه فوري من المشرف!</string>
+    <string name="btn_inspect_ai">فحص AI</string>
+    <string name="btn_complete_task">إكمال وصرف مستهلكات</string>
+    <string name="btn_task_completed">تم الإكمال</string>
+    <string name="btn_add_room_task">إضافة غرفة</string>
+    <string name="filter_all">الكل</string>
+    <string name="filter_urgent">عاجلة</string>
+    <string name="filter_needs_fix">تحتاج تعديل</string>
+    <string name="filter_completed">مكتملة</string>
+
+    <!-- Add Room Dialog -->
+    <string name="dialog_add_room_title">إضافة مهمة غرفة جديدة</string>
+    <string name="field_room_number">رقم الغرفة (مثال: 402)</string>
+    <string name="field_room_title">اسم/نوع الغرفة (مثال: جناح تنفيذي #402)</string>
+    <string name="field_floor_number">رقم الدور</string>
+    <string name="field_assigned_staff">عامل النظافة المسؤول</string>
+    <string name="field_subtitle_note">ملاحظة التشغيل (تسجيل خروج / تنظيف دوري)</string>
+    <string name="btn_save">حفظ المهمة</string>
+    <string name="btn_cancel">إلغاء</string>
+
+    <!-- Consumables Inventory -->
+    <string name="inventory_header_title">جرد المواد المستهلكة</string>
+    <string name="inventory_header_subtitle">متابعة لحظية للمخزون وتنبيهات الإدارة الآلية</string>
+    <string name="btn_add_consumable">إضافة صنف</string>
+    <string name="cat_all">الكل</string>
+    <string name="cat_soap">صابون</string>
+    <string name="cat_shampoo">شامبو</string>
+    <string name="cat_towels">مناشف</string>
+    <string name="cat_amenities">مستلزمات</string>
+    <string name="cat_low_stock">نقص مخزون</string>
+    <string name="mgmt_low_stock_banner_title">تنبيه عاجل للإدارة والمشتريات!</string>
+    <string name="btn_notify_management">إرسال طلب توريد للإدارة</string>
+    <string name="btn_restock_full">تزويد المخزون بالكامل</string>
+    <string name="status_stock_low">منخفض - تنبيه للإدارة</string>
+    <string name="status_stock_order_sent">تم إبلاغ الإدارة للتوريد</string>
+    <string name="status_stock_healthy">متوفر ومستقر</string>
+    <string name="dialog_add_consumable_title">إضافة صنف مستهلك جديد</string>
+    <string name="field_item_name">اسم الصنف (مثال: صابون يدين فاخر)</string>
+    <string name="field_current_stock">الكمية الحالية</string>
+    <string name="field_min_threshold">حد التنبيه الأدنى</string>
+    <string name="field_max_capacity">السعة القصوى</string>
+    <string name="field_unit_label">الوحدة (عبوة / قطعة / طقم)</string>
+    <string name="field_storage_location">موقع التخزين (مثال: مخزن الدور 3)</string>
+
+    <!-- Manager Dashboard -->
+    <string name="dashboard_header_title">مؤشرات التشغيل والجودة</string>
+    <string name="dashboard_header_subtitle">تحليلات حية لأداء فريق الإشراف الداخلي</string>
+    <string name="today_badge">اليوم</string>
+    <string name="kpi_quality_rate">معدل جودة النظافة</string>
+    <string name="kpi_quality_delta">▲ +4.2% مقارنة بأمس</string>
+    <string name="kpi_avg_scan_time">متوسط زمن الفحص</string>
+    <string name="kpi_scan_time_delta">▼ توفير 8 دقائق/غرفة</string>
+    <string name="dashboard_low_stock_card_title">تنبيهات نقص المخزون للإدارة</string>
+    <string name="btn_open_inventory">مراجعة المخزون والتوريد</string>
+    <string name="chart_turnaround_title">سرعة تجهيز الغرف خلال الأسبوع (بالدقائق)</string>
+    <string name="chart_error_types_title">تصنيف الملاحظات المكتشفة بالـ AI</string>
+    <string name="recent_audits_title">سجل التدقيق السحابي الأخير</string>
+    <string name="prototype_security_notice">وضع التشغيل المباشر: يعمل الفحص البصري الحقيقي عبر مفتاح Gemini المُدار من لوحة Secrets</string>
+
+    <!-- Native Phone Sharing -->
+    <string name="share_chooser_title">مشاركة التقرير عبر الهاتف</string>
+    <string name="top_share_label">مشاركة</string>
+    <string name="top_share_cd">مشاركة ملخص حالة الفندق عبر الهاتف</string>
+    <string name="status_direct_active">جاهز</string>
+    <string name="btn_share_scan_report">مشاركة تقرير الفحص عبر الهاتف</string>
+    <string name="cd_share_room_status">مشاركة حالة الغرفة الحالية</string>
+    <string name="cd_share_task">مشاركة تفاصيل المهمة عبر الهاتف</string>
+    <string name="cd_share_all_tasks">مشاركة جدول المهام اليومي</string>
+    <string name="btn_share_supply_order">مشاركة طلب التوريد عبر الهاتف</string>
+    <string name="cd_share_inventory">مشاركة تقرير جرد المخزون</string>
+    <string name="btn_share_kpi_report">مشاركة المؤشرات</string>
+    <string name="cd_share_kpi_report">مشاركة تقرير مؤشرات التشغيل والجودة عبر الهاتف</string>
+
+    <!-- Share App Link Hub -->
+    <string name="shared_app_url" translatable="false">https://ais-pre-6acogpmm42uktnv23z6yiq-746483944508.europe-west2.run.app</string>
+    <string name="share_app_chooser_title">مشاركة تطبيق OptiClean AI عبر</string>
+    <string name="share_app_dialog_title">مشاركة تطبيق OptiClean AI</string>
+    <string name="share_app_dialog_subtitle">أرسل رابط التطبيق المباشر للزملاء وفريق الإشراف الفندقي لتجربته فوراً أو شارك ملخص التشغيل</string>
+    <string name="share_app_link_label">رابط المعاينة والتجربة المباشر</string>
+    <string name="btn_share_app_link">مشاركة رابط التطبيق عبر الهاتف</string>
+    <string name="btn_share_hotel_summary">مشاركة ملخص حالة الفندق</string>
+    <string name="btn_copy_link">نسخ الرابط</string>
+    <string name="btn_link_copied">تم النسخ</string>
+    <string name="cd_copy_app_link">نسخ رابط التطبيق إلى الحافظة</string>
+    <string name="snackbar_link_copied">تم نسخ رابط تطبيق OptiClean AI إلى الحافظة بنجاح</string>
+    <string name="btn_close">إغلاق</string>
+    <string name="dashboard_share_app_title">دعوة الفريق ومشاركة التطبيق</string>
+    <string name="dashboard_share_app_desc">شارك رابط تطبيق OptiClean AI مع المشرفين وموظفي الفندق للوصول السريع لمنظومة الفحص الذكي.</string>
+</resources>

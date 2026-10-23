@@ -1,0 +1,8 @@
+{
+  "name": "OptiClean AI",
+  "description": "منظومة الإشراف الداخلي الفندقي الذكي والفحص البصري بالذكاء الاصطناعي وإدارة مهام النظافة",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
