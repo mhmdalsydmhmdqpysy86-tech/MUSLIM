@@ -114,7 +114,7 @@
     <string name="cd_share_kpi_report">مشاركة تقرير مؤشرات التشغيل والجودة عبر الهاتف</string>
 
     <!-- Share App Link Hub -->
-    <string name="shared_app_url" translatable="false">https://ais-pre-6acogpmm42uktnv23z6yiq-746483944508.europe-west2.run.app</string>
+    <string name="shared_app_url" translatable="false">https://ais-pre-uhmqraehh6timmaoeupvzd-746483944508.europe-west2.run.app</string>
     <string name="share_app_chooser_title">مشاركة تطبيق OptiClean AI عبر</string>
     <string name="share_app_dialog_title">مشاركة تطبيق OptiClean AI</string>
     <string name="share_app_dialog_subtitle">أرسل رابط التطبيق المباشر للزملاء وفريق الإشراف الفندقي لتجربته فوراً أو شارك ملخص التشغيل</string>
